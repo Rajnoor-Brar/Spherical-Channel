@@ -1,64 +1,23 @@
-% slopes of central axis (x,a,b)
+% Degree of the polynomial fit
+polynomial_order = 3;  % Choose based on the complexity of the data
 
-count=size(x,2);
-% To get number of elements in x
+% Number of points in the dataset
+count = size(x, 2);
 
-tangent_y = zeros(1,count);
-tangent_z= zeros(1,count);
+% Fit polynomials globally for y and z
+p_y = polyfit(x, y, polynomial_order);  % Polynomial coefficients for y
+p_z = polyfit(x, z, polynomial_order);  % Polynomial coefficients for z
 
-slopes_y= zeros(count+1);
-slopes_z= zeros(count+1);
-sums_y= zeros(count+1,count+2);
-sums_z= zeros(count+1,count+2);
+% Compute the derivative coefficients
+dp_y = polyder(p_y);  % Derivative coefficients for y
+dp_z = polyder(p_z);  % Derivative coefficients for z
 
+% Initialize arrays to store tangents (derivatives) at each point
+tangent_y = zeros(1, count);
+tangent_z = zeros(1, count);
 
-global_x=x;
-global_y=y;
-global_z=z;
-
-%%---------------Gauss Elimination----------------------
-%Matrix Builder
-for i=1:(count+1)
-    for j=1:(count+1)
-        sums_y(i,j) = sum( global_x.^(count+i-j) );
-        sums_z(i,j) = sums_y(i,j);
-    end
-    sums_y(i,count+2)=sum(global_y.*(global_x.^(i-1)));
-    sums_z(i,count+2)=sum(global_z.*(global_x.^(i-1)));
-end
-
-%Solver : Triangulator
-for i=1:count
-    for j=(i+1):(count+1)
-        for k=1:(count+2)
-            sums_y(j,k)= sums_y(j,k)-(sums_y(j,i)*sums_y(i,k)/sums_y(i,i));
-            sums_z(j,k)= sums_z(j,k)-(sums_z(j,i)*sums_z(i,k)/sums_z(i,i));
-        end
-    end
-end
-
-%Solver : to Diagonal to Identity Matrix
-slopes_y(count+1) = sums_y(count+1,count+2);
-slopes_z(count+1) = sums_z(count+1,count+2);
-
-for i=count:-1:1
-    slopes_y(i) = sums_y(i,count+2);
-    slopes_z(i) = sums_z(i,count+2);
-
-    for j=(i+1):(count+1)
-        slopes_y(i) = slopes_y(i) - (sums_y(i,j)*slopes_y(j));
-        slopes_z(i) = slopes_z(i) - (sums_y(i,j)*slopes_z(j));
-    end
-
-    slopes_y(i)=slopes_y(i)/sums_y(i,i);
-    slopes_z(i)=slopes_z(i)/sums_z(i,i);
-end
-
-
-    % calculating tangent to the axis "curve"
-for n=1:count
-    for i=1:count
-        tangent_y(n)= tangent_y(n)+( (count-i+1)* slopes_y(i)* ( x(n)^(count-i) ) );
-        tangent_z(n)= tangent_z(n)+( (count-i+1)* slopes_z(i)* ( x(n)^(count-i) ) );
-    end
+% Evaluate the derivative polynomials at each point in x
+for n = 1:count
+    tangent_y(n) = polyval(dp_y, x(n));  % Derivative of y at x(n)
+    tangent_z(n) = polyval(dp_z, x(n));  % Derivative of z at x(n)
 end
