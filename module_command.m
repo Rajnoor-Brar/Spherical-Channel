@@ -1,5 +1,4 @@
 fname="curves.txt";
-fname="curve.txt";
 
 impdata = load(fname,"~ascii");
 
