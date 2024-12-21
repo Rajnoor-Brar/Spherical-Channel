@@ -116,7 +116,7 @@ To plot a surface in MATLAB, we use \(surf(x,y,z)\) where
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{Images/Sphere_Mesh_Black.png}
+    \includegraphics[width=\linewidth]{Images/Sphere_Mesh_Gray.png}
     \caption{Sphere as mesh of various densities}
 \end{figure}
 
@@ -140,18 +140,15 @@ clear impdata;
 \subsection{The Channel and The
 Cylinder}\label{the-channel-and-the-cylinder}}
 
-To simplify the mathematics of a channel, we will make an analogy to one of its special case, A Right Cylindrical Surface.
+To simplify the mathematics of a channel, we will make an analogy to one of its special cases, a right cylindrical surface.
 
-A Right Cylindrical Surface is a channel formed by a series of spheres, with their directrix being a line. Alternatively, a Solid Cylinder can be thought of as the result of integrating circular discs oriented perpendicular to the directrix. A Cylindrical Surface, on the other hand, is the result of integrating circles or the perimeters of the discs.
+A right cylindrical surface is a channel formed by a series of spheres, with their directrix being a line. Alternatively, a solid cylinder can be thought of as the result of integrating circular discs oriented perpendicular to the directrix. A cylindrical surface, on the other hand, is the result of integrating circles or the perimeters of the discs.
 
 \begin{figure}[h]
     \centering
-   % \includegraphics[width=\linewidth]{Images/Cylinder_Stacks.png}
-   \includegraphics[width=0.7\linewidth]{Images/Cylinder_Stack_Left.jpeg}
-   % \subfigure{\includegraphics[width=0.8\textwidth]{Images/Cylinder_Stack_Left.jpeg}}
+    \includegraphics[width=0.7\linewidth]{Images/Cylinder_Stack_Left.png}
    
-    \includegraphics[width=0.72\linewidth]{Images/Cylinder_Stack_Right.jpeg}
-  %  \subfigure{\includegraphics[width=0.8\textwidth]{Images/Cylinder_Stack_Right.jpeg}}
+    \includegraphics[width=0.72\linewidth]{Images/Cylinder_Stack_Right.png}
     \caption{Cylinder as Integration of Circular Sheets}
 \end{figure}
 
@@ -176,9 +173,9 @@ x=(p+u)/2;
 y=(q+v)/2;
 z=(r+w)/2;
 \end{lstlisting}
-By default, MATLAB attempts to perform matrix operation on arrays, that is using multiplication and squaring results in matrix multiplication. Therefore, operations are modified with ``\verb|.|" to make them an element-wise operation. ``\verb|.^2|" results in squaring of each element individually, instead of the matrix as a whole. \verb|sqrt()| applies element-wise only.
+By default, MATLAB attempts to perform matrix operations on arrays; that is, using multiplication and squaring results in matrix multiplication. Therefore, operations are modified with ``\verb|.|" to make them element-wise operations. ``\verb|.^2|" results in squaring of each element individually, instead of the matrix as a whole. \verb|sqrt()| applies element-wise only.
 
-We have one more necessary parameter to determine: the tangents of directrix. Since we are dealing with a set of discrete points, there are a few techniques that we can use for calculating tangents.
+We have one more necessary parameter to determine: the tangents of the directrix. Since we are dealing with a set of discrete points, there are a few techniques that we can use for calculating tangents.
 \[\Vec{R}  =  \left(\, x(t)\,  ,\,  y(t) \, , \,  z(t)\, \right)\]
 
 A one dimensional object, like a line or a curve, suspended in a three dimensional space can be represented as each coordinate being a function some independent parameter $'t'$.
@@ -194,7 +191,7 @@ If \(t := x\),
 \subsection{Global Polynomial Fit}\label{GlobalFit}}
 Global polynomial fitting involves approximating a dataset using a single polynomial equation of degree $k$ that best represents the data. Once fitted, the polynomial can be differentiated to compute derivatives (e.g., slopes) at any given data point.
 
-Evaluating the slope of a curve can be quite tedious to code. First, we need to determine the coefficients of the fitted polynomial and then use these coefficients to calculate the derivative of the polynomial at each point. Fortunately, we can simplify this process by using MATLAB’s built-in functions. The function \verb|polyfit(x,y,k)| fits the polynomial equation, while the function \verb|polyder(func)| provides the derivative equation \cite{mathworks_polyfit}\cite{mathworks_polyder} . The equation is presented as a row vector, with each element corresponding to a coefficient. Finally, the function \verb|polyval(func,val)| evaluates the value of a polynomial at a specified point \cite{mathworks_polyval}.
+Calculating the slope of a curve can be quite tedious to code. First, we need to determine the coefficients of the fitted polynomial and then use these coefficients to calculate the derivative of the polynomial at each point. Fortunately, we can simplify this process by utilizing MATLAB’s built-in functions. The function \verb|polyfit(x,y,k)| fits the polynomial equation, while the function \verb|polyder(func)| provides the derivative equation \cite{mathworks_polyfit}\cite{mathworks_polyder}. The equation is presented as a row vector, with each element corresponding to a coefficient. Finally, the function \verb|polyval(func,val)| evaluates the value of a polynomial at a specified point \cite{mathworks_polyval}.
 
 \begin{lstlisting}[language=matlab]
 % Degree of the polynomial fit
@@ -248,7 +245,7 @@ end
 \end{itemize}
 
 \subsubsection{Limitations}
-This runs the risk of either overestimating or underestimating the curve if proper degree of the polynomial is not used. This requires prior understanding of expected behaviour of the data. While the curve itself may follow closely to the data, derivatives may not be so accurate. Caution is advised using this method.
+This runs the risk of either overestimating or underestimating the curve if the proper degree of the polynomial is not used. This requires prior understanding of the expected behaviour of the data. While the curve itself may follow closely to the data, derivatives may not be so accurate. Caution is advised when using this method.
 
 \hypertarget{spline-fit}{%
 \subsection{Spline Interpolation}\label{Spline}}
@@ -318,14 +315,14 @@ end
 \end{itemize}
 
 \subsubsection{Limitation}
-The \verb|polyfit| function in MATLAB throws an error when the data points are too close to each other, for instance, when the difference between any two consecutive points is less than \(0.01\). Essentially, MATLAB considers data points that are too close to each other to be redundant, as they essentially represent the same point. For such that cases, we can use much a simpler tool.
+The \verb|polyfit| function in MATLAB throws an error when the data points are too close to each other, for instance, when the difference between any two consecutive points is less than \(0.01\). Essentially, MATLAB considers data points that are too close to each other to be redundant, as they essentially represent the same point. For such cases, we can use a much simpler tool.
 
 \hypertarget{Central Finite Difference}{%
 \subsection{Central Finite Difference}\label{lagranges-mean-value-theorem}}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\linewidth]{Images/Mean Value Tangent.jpeg}
+    \includegraphics[width=0.5\linewidth]{Images/Mean Value Tangent.png}
     \caption{Line connecting two points is the slope at some point that lies between the given points of the curve they lie on}
 \end{figure}
 This method is mainly based on Lagrange's mean value theorem that states that in any interval \(\lbrack a,b\rbrack\), there is some \(c\), for which
@@ -333,7 +330,7 @@ This method is mainly based on Lagrange's mean value theorem that states that in
 \[f^{'}(c) = \frac{f(b) - f(a)}{b - a}\]
 
 We assume that the point\(c\) is close enough to our point that we can approximate its tangent as being equal to our point. This approximation becomes more accurate as the boundary points get closer, to the extent that these three points almost form a straight line and our point almost lies on it.
-This method is simple, fast, and shines exceptionally bright in the dark shadows of Spline Interpolation.
+This method is simple, fast, and shines exceptionally bright in the dark shadows of spline interpolation.
 
 \[\frac{\partial\vec{R}}{\partial x} = \frac{\partial x}{\partial x}\ \hat{i} + \frac{\partial y}{\partial x}\ \hat{j} + \frac{\partial z}{\partial x}\ \hat{k}\]
 
@@ -360,7 +357,7 @@ end
 
 \end{lstlisting}
 
-Spline interpolation excels where finite difference fails and vice versa. These two powerful tools complement each other, filling in the gaps in each other’s capabilities. Either of them can be used modularly depending upon the need of the data
+Spline interpolation excels where finite difference fails, and vice versa. These two powerful tools complement each other, filling in the gaps in each other’s capabilities. Either of them can be used modularly, depending on the need of the data.
 \pagebreak
 \subsection{Comparison of Methods}
 \begin{table}[ht]
@@ -407,23 +404,23 @@ Data that we use as test data is very dense and smooth. Therefore, we will use t
 \end{figure}
 An ellipse is a locus of points in a plane whose distances from two focal points in that plane have a constant sum.
 
-Let the focal points be \(C_{1}\ ,\ C_{2}\), and \(O\) be their midpoint, which will be the center of the ellipse.\\ For any point \(P\), \(C_{1}P + C_{2}P = k\).
+Let the focal points be \(C_{1}\) , \( C_{2}\), and \(O\) be their midpoint, which will be the center of the ellipse. For any point \(P\) on the ellipse, \(C_{1}P + C_{2}P = k\).
 
-Line passing through focal points is called the Major Axis, while line passing through the Center and perpendicular to the Major Axis in the plane of the ellipse is called the Minor Axis.
+The line passing through focal points is called the Major Axis, while the line passing through the Center and perpendicular to the Major Axis in the plane of the ellipse is called the Minor Axis.
 
-Let ( \(OA = a\) ) be semi-major axis, ( \(OB = b\) ) be semi-minor axis, and ( \(OC = c\) ) be focal distance from center.
+Let ( \(OA = a\) ) be the semi-major axis, ( \(OB = b\) ) be the semi-minor axis, and ( \(OC = c\) ) be the focal distance from the center.
 
 Some useful relations are as follows:
 \[a = \frac{k}{2}\]
 \[a^{2} = b^{2} + c^{2}\]
 
-Since we require each co-ordinate of ellipses separately, we will consider vector equation of ellipse.
+Since we require each co-ordinate of ellipses separately, we will consider the vector equation of ellipse.
 \[\vec{r} = a \cdot \cos(\theta)\ \hat{i} + b \cdot \sin(\theta)\ \hat{j} + \ \Vec{O}\]
-This is the standard equation of an ellipse with center \(\vec{O}\) and axes along x-axis \& y-axis.
+This is the standard equation of an ellipse with center \(\vec{O}\) and axes along the x-axis and y-axis.
 
 In fact, we can replace standard unit vectors with any set of mutually perpendicular unit vectors to make an ellipse in any orientation anywhere in the 2-D space.
 \[\vec{r} = a \cdot \cos(\theta)\ \hat{a} + b \cdot \sin(\theta)\ \hat{b} + \ \Vec{O}\]
-These vectors even need not be restricted to 2-D spaces, they can be vectors of any dimensions. We will concern ourselves with Ellipses in 3-D space. This works by making standard ellipse in vector space \(\mathcal{A}\) defined by basis vectors\((\hat{a}\ ,\ \hat{b} )\), then this space is defined as subset of \(\mathcal{X}\) having basis \((\hat{i}\ ,\ \hat{j}\ , \hat{k} )\) by having \((\hat{a}\ ,\ \hat{b} )\) themselves be vectors in \(\mathcal{X}\). Then, the whole ellipse is translated to desired center point \(\vec{O}\). 
+These vectors even need not be restricted to 2-D spaces; they can be vectors of any dimensions. We will concern ourselves with ellipses in 3-D space. This works by making a standard ellipse in vector space \(\mathcal{A}\) defined by basis vectors\((\hat{a} , \hat{b} )\), then this space is defined as a subset of \(\mathcal{X}\) having basis \((\hat{i} , \hat{j} , \hat{k} )\) by having \((\hat{a} , \hat{b} )\) themselves be vectors in \(\mathcal{X}\). Then, the whole ellipse is translated to the desired center point \(\vec{O}\). 
 
 Let any vector \(x\hat{i} + y \hat{j} + z\hat{k}\) be
 represented as a matrix \(\big[\begin{matrix}x & y & z \end{matrix}\big]\)
@@ -577,7 +574,7 @@ All the code described throughout the document is compiled into one \(.m\) file 
     \item EdgeAlpha (0-1) : Opacity of Edges in Mesh. Set to 0 as dense mesh causes whole figure to black out
     \item FaceColor : Color of the surface. Set to in-built option "interp" that shades a gradient based on z-value
     \item FaceLighting : Defines light source for surface.
-    \item SpecularStrength (0-1): Defines Mattness or Gossiness of the surface
+    \item SpecularStrength (0-1): Defines Glossiness of the surface
     \item AmbientStrength (0-1): Defines strength of ambient light that illuminates from all directions
 \end{itemize}
 \begin{lstlisting}[language=matlab]
@@ -613,7 +610,7 @@ save("curves.txt","x","a","b","x","c","d","rad","-ascii");
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\linewidth]{Images/Uncharted_Tunnel_Left.png}
+    \includegraphics[width=1\linewidth]{Images/Uncharted_Tunnel.png}
     \caption{Rendering of Calculated Mesh}
     \label{Channel with cross-sections}
 \end{figure}
@@ -632,7 +629,7 @@ g_cross       = plot3(cyl_x(1:end, 1:(1+cross_density):end),...
                       'LineWidth',1);
 end
 \end{lstlisting}
-
+\pagebreak
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\linewidth]{Images/Skeleton.png}
@@ -644,7 +641,7 @@ end
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.75\linewidth]{Images/Charted_Tunnel_Right.png}
-    \caption{Channels with sparsely marked cross-sections}
+    \caption{Channel with sparsely marked cross-sections}
 \end{figure}
 
 \subsection{Shadows}
@@ -680,13 +677,14 @@ shadow_yz.FaceAlpha             = ShadowAlpha;
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\linewidth]{Images/Shadowed_Tunnnel.png}
-    \caption{Channels with cross-sections and shadows}
+    \caption{Channel with cross-sections and shadows}
 \end{figure}
 
 \newpage
 \bibliographystyle{unsrt}
 \bibliography{references}
 
-\textbf{All figures except figure 1 are made by the Author only, with MATLAB and GeoGebra}\\
+\textbf{All figures except figure 1 are made with MATLAB and GeoGebra}
+
 Complete Code available at \url{https://github.com/Rajnoor-Brar/Ellipsoidal-Channel}
 \end{document}
