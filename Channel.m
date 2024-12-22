@@ -6,7 +6,7 @@ t=0: 0.01 :2*pi+0.1;
 t(end+1)=(2*pi+0.1);
 k=ones(size(t));
 
-run("module_tangent_mean.m");                   % Estimates tangents of axis of cylinder at input points
+run("module_tangent_spline.m");                   % Estimates tangents of axis of cylinder at input points
 
 run("module_cross_section.m");             % Gives co-ordinates of circular cross-sections perpendicular to tangents
 

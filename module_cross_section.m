@@ -6,13 +6,14 @@ for n=1:size(x,2)
     norm_vec      = [1 tangent_y(n) tangent_z(n)];
     norm_vec      = norm_vec/norm(norm_vec);
     
-    major_vec     = [(p(n)-u(n))/2 (q(n)-v(n))/2 (r(n)-w(n))/2]; % = focal_vector
+    major_vec     = [0 -1*tangent_z(n) tangent_y(n)];
+    %major_vec     = cross(norm_vec,[0 y(n) z(n)]); % cross prodcuct: norm_vec * [1 0 0]; give one among infinite vector perpendiculat to norm_vec
     major_vec     = major_vec/norm(major_vec);
-
+    
     minor_vec     = cross(norm_vec,major_vec);
     minor_vec     = minor_vec/norm(minor_vec);
     
-    point_vec     = (major(n)*(cos(t)' * major_vec)+ minor(n)*(sin(t)' * minor_vec));
+    point_vec     = rad(n)*((cos(t)' * major_vec) + (sin(t)' * minor_vec));
 
     cyl_x(1:end,n)= point_vec(1:end,1);
     cyl_y(1:end,n)= point_vec(1:end,2);
